@@ -1,0 +1,50 @@
+[
+  {
+    "date": "2025-04-26",
+    "startTime": "3:00 PM",
+    "endTime": "5:00 PM",
+    "available": true
+  },
+  {
+    "date": "2025-04-29",
+    "startTime": "2:30 PM",
+    "endTime": "5:00 PM",
+    "available": false
+  },
+  {
+    "date": "2025-04-30",
+    "startTime": "5:30 PM",
+    "endTime": "7:30 PM",
+    "available": false
+  },
+  {
+    "date": "2025-04-30",
+    "startTime": "12:30 PM",
+    "endTime": "2:30 PM",
+    "available": false
+  },
+  {
+    "date": "2025-05-01",
+    "startTime": "1:00 PM",
+    "endTime": "3:30 PM",
+    "available": true
+  },
+  {
+    "date": "2025-05-02",
+    "startTime": "1:00 PM",
+    "endTime": "3:30 PM",
+    "available": false
+  },
+  {
+    "date": "2025-05-01",
+    "startTime": "4:00 PM",
+    "endTime": "6:00 PM",
+    "available": true
+  },
+  {
+    "date": "2025-05-02",
+    "startTime": "4:30 PM",
+    "endTime": "6:00 PM",
+    "available": true
+  }
+]
