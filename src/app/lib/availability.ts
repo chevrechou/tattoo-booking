@@ -2,11 +2,11 @@ import { promises as fs } from "fs";
 import path from "path";
 import { Availability } from "./types";
 
-const FILE_PATH = path.join(process.cwd(), "src/app/data/availabilities.json");
+const AVAILABILITY_PATH = path.join(process.cwd(), "src/app/data/availabilities.json");
 
 export async function getAvailabilities(): Promise<Availability[]> {
   try {
-    const data = await fs.readFile(FILE_PATH, "utf-8");
+    const data = await fs.readFile(AVAILABILITY_PATH, "utf-8");
     return JSON.parse(data);
   } catch {
     return [];
@@ -26,7 +26,7 @@ export async function updateAvailability(
       : a
   );
 
-  await fs.writeFile(FILE_PATH, JSON.stringify(updated, null, 2));
+  await fs.writeFile(AVAILABILITY_PATH, JSON.stringify(updated, null, 2));
 }
 
 export async function addAvailabilities(
@@ -44,7 +44,7 @@ export async function addAvailabilities(
       ) === i
   );
 
-  await fs.writeFile(FILE_PATH, JSON.stringify(merged, null, 2));
+  await fs.writeFile(AVAILABILITY_PATH, JSON.stringify(merged, null, 2));
 }
 
 export async function deleteAvailability(
@@ -59,5 +59,5 @@ export async function deleteAvailability(
       !(a.date === date && a.startTime === startTime && a.endTime === endTime)
   );
 
-  await fs.writeFile(FILE_PATH, JSON.stringify(filtered, null, 2));
+  await fs.writeFile(AVAILABILITY_PATH, JSON.stringify(filtered, null, 2));
 }

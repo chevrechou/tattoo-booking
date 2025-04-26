@@ -3,16 +3,10 @@
 import { useEffect, useState } from 'react';
 import {
   Calendar,
-  Views,
   dateFnsLocalizer,
   SlotInfo,
 } from 'react-big-calendar';
-import {
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-} from 'date-fns';
+import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -49,19 +43,21 @@ export default function ArtistAvailabilityCalendar() {
   const [viewBooking, setViewBooking] = useState<Booking | null>(null);
   const [currentView, setCurrentView] = useState<CalendarView>('week');
 
+  // ADDED: make loadData reusable so we can reload after confirming
+  const loadData = async () => {
+    const [availabilityRes, bookingsRes] = await Promise.all([
+      axios.get('/api/availability'),
+      axios.get('/api/booking'),
+    ]);
+    setExistingAvailabilities(availabilityRes.data);
+    setBookings(bookingsRes.data);
+  };
+
   useEffect(() => {
     setCurrentView(isMobile ? 'day' : 'week');
   }, [isMobile]);
 
   useEffect(() => {
-    const loadData = async () => {
-      const [availabilityRes, bookingsRes] = await Promise.all([
-        axios.get('/api/availability'),
-        axios.get('/api/booking'),
-      ]);
-      setExistingAvailabilities(availabilityRes.data);
-      setBookings(bookingsRes.data);
-    };
     loadData();
   }, []);
 
@@ -85,8 +81,7 @@ export default function ArtistAvailabilityCalendar() {
       await waitAtLeast(axios.post('/api/availability', payload));
       setSelectedSlots([]);
 
-      const refreshed = await axios.get('/api/availability');
-      setExistingAvailabilities(refreshed.data);
+      await loadData(); // CHANGED: reload after saving
     } catch (err) {
       console.error('Failed to save availability', err);
     } finally {
@@ -108,8 +103,7 @@ export default function ArtistAvailabilityCalendar() {
         data: { date, startTime, endTime },
       });
 
-      const refreshed = await axios.get('/api/availability');
-      setExistingAvailabilities(refreshed.data);
+      await loadData(); // CHANGED: reload after deleting
 
       notifications.show({
         title: 'Slot Deleted',
@@ -150,6 +144,7 @@ export default function ArtistAvailabilityCalendar() {
       end,
       source: 'saved',
       available: a.available,
+      confirmed: a.confirmed || false, // ADDED: track confirmed
     };
   });
 
@@ -158,6 +153,8 @@ export default function ArtistAvailabilityCalendar() {
     start: slot.start,
     end: slot.end,
     source: 'new',
+    available: true,
+    confirmed: false, // ADDED: consistent fields
   }));
 
   const handleSelectEvent = (event: any) => {
@@ -197,8 +194,12 @@ export default function ArtistAvailabilityCalendar() {
           selectable
           events={[...availabilityEvents, ...newEvents]}
           eventPropGetter={(event) => {
+            console.log(event)
             if (event.source === 'new') {
               return { style: { backgroundColor: '#ccc', color: 'black' } };
+            }
+            if (event.confirmed) {
+              return { style: { backgroundColor: '#40c057', color: 'white' } }; // CHANGED: green for confirmed
             }
             if (!event.available) {
               return { style: { backgroundColor: '#fa5252', color: 'white' } };
@@ -230,6 +231,7 @@ export default function ArtistAvailabilityCalendar() {
         <BookingDetailsPanel
           booking={viewBooking}
           onClear={() => setViewBooking(null)}
+          reload={loadData} // ADDED: pass reload down
         />
       </Grid.Col>
     </Grid>

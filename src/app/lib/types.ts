@@ -5,6 +5,7 @@ export type Booking = {
   name: string;
   email: string;
   notes: string;
+  confirmed?: boolean;
 };
 
 export type Availability = {
