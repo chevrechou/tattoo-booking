@@ -15,7 +15,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { Grid, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import { Availability, Booking } from '../lib/types';
+import { Availability, Booking, CalendarEvent } from '../lib/types';
 import { waitAtLeast } from '../utils/waitAtLeast';
 
 import BookingDetailsPanel from './BookingDetailsPanel';
@@ -122,7 +122,7 @@ export default function ArtistAvailabilityCalendar() {
     }
   };
 
-  const availabilityEvents = existingAvailabilities.map((a) => {
+  const availabilityEvents: CalendarEvent[] = existingAvailabilities.map((a) => {
     const start = new Date(`${a.date} ${a.startTime}`);
     const end = new Date(`${a.date} ${a.endTime}`);
 
@@ -148,7 +148,7 @@ export default function ArtistAvailabilityCalendar() {
     };
   });
 
-  const newEvents = selectedSlots.map((slot) => ({
+  const newEvents: CalendarEvent[] = selectedSlots.map((slot) => ({
     title: 'Unsaved',
     start: slot.start,
     end: slot.end,
@@ -157,7 +157,7 @@ export default function ArtistAvailabilityCalendar() {
     confirmed: false, // ADDED: consistent fields
   }));
 
-  const handleSelectEvent = (event: any) => {
+  const handleSelectEvent = (event: CalendarEvent) => {
     if (event.source === 'saved') {
       if (!event.available) {
         const booking = bookings.find(

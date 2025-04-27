@@ -24,6 +24,7 @@ export function BookingModal({
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false); // 🔥 added loading state
 
   const isoDate = selectedDate?.toISOString().split('T')[0];
 
@@ -43,7 +44,7 @@ export function BookingModal({
     }));
   }, [availabilities, selectedDate]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedDate || !slot || !name || !email) return;
 
     if (!isValidEmail(email)) {
@@ -51,26 +52,35 @@ export function BookingModal({
       return;
     }
 
-    setEmailError(null); // Clear error
+    setEmailError(null);
 
-    const [startTime, endTime] = slot.split('-');
+    setLoading(true); // 🔥 start loading
 
-    const booking: Booking = {
-      date: isoDate!,
-      startTime,
-      endTime,
-      name,
-      email,
-      notes,
-    };
+    try {
+      const [startTime, endTime] = slot.split('-');
 
-    onBook(booking);
+      const booking: Booking = {
+        date: isoDate!,
+        startTime,
+        endTime,
+        name,
+        email,
+        notes,
+      };
 
-    // Reset
-    setSlot('');
-    setName('');
-    setEmail('');
-    setNotes('');
+      await onBook(booking); // Assume onBook returns a Promise (you may need to adjust if it doesn't)
+
+      // Reset fields after success
+      setSlot('');
+      setName('');
+      setEmail('');
+      setNotes('');
+      onClose(); // 🔥 close modal after successful booking
+    } catch (error) {
+      console.error('Failed to submit booking', error);
+    } finally {
+      setLoading(false); // 🔥 end loading
+    }
   };
 
   const isFormInvalid =
@@ -86,6 +96,7 @@ export function BookingModal({
           value={slot}
           onChange={(value) => setSlot(value || '')}
           required
+          disabled={loading} // 🔥 disable while loading
         />
         <TextInput
           label="Your Name"
@@ -93,6 +104,7 @@ export function BookingModal({
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
+          disabled={loading} // 🔥 disable while loading
         />
         <TextInput
           label="Your Email"
@@ -113,6 +125,7 @@ export function BookingModal({
           }}
           error={emailError}
           required
+          disabled={loading} // 🔥 disable while loading
           rightSection={
             isValidEmail(email) && !emailError ? (
               <IconCheck size={18} color="green" />
@@ -129,9 +142,16 @@ export function BookingModal({
           placeholder="Describe your tattoo idea..."
           value={notes}
           onChange={(e) => setNotes(e.currentTarget.value)}
+          disabled={loading} // 🔥 disable while loading
         />
-        <Button onClick={handleSubmit} disabled={isFormInvalid}>
-          Submit Booking
+
+        {/* 🔥 Submit Button with Loading */}
+        <Button
+          onClick={handleSubmit}
+          disabled={isFormInvalid || loading}
+          fullWidth
+        >
+          {loading ? 'Submitting...' : 'Submit Booking'}
         </Button>
       </Stack>
     </Modal>

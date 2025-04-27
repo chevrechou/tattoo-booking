@@ -27,3 +27,12 @@ export interface BookingModalProps {
 export interface BookingCalendarProps {
   onSelectDay: (date: Date) => void;
 }
+
+export type CalendarEvent = {
+  title: string;
+  start: Date;
+  end: Date;
+  source: 'saved' | 'new';
+  available: boolean;
+  confirmed: boolean;
+};
