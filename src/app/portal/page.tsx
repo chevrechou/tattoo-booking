@@ -19,7 +19,7 @@ const ArtistAvailabilityCalendar = dynamic(
 export default function ArtistPortalPage() {
   return (
     <Container size="xl" mt="xl" pb="xl">
-      <Title align="center" mb="md">Artist Availability Portal</Title>
+      <Title style={{ textAlign: 'center', marginBottom: '1rem' }}>Artist Availability Portal</Title>
       <ArtistAvailabilityCalendar />
     </Container>
   );

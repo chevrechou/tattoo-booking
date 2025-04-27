@@ -27,7 +27,7 @@ export default function DeleteSlotModal({
   return (
     <Modal opened={opened} onClose={onClose} title="Delete Availability?" centered>
       <p>Are you sure you want to delete this slot?</p>
-      <Group position="apart" mt="md">
+      <Group mt="md">
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
