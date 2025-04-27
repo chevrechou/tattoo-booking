@@ -9,7 +9,7 @@ export function Navbar() {
 
   return (
     <Container size="xl">
-      <Group position="center" mb="xl" >
+      <Group mb="xl" >
         <Link href="/" passHref>
           <Button
             variant={pathname === '/' ? 'filled' : 'light'}

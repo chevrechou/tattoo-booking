@@ -3,14 +3,15 @@
     "date": "2025-04-30",
     "startTime": "12:30 PM",
     "endTime": "2:30 PM",
-    "available": true,
+    "available": false,
     "confirmed": false
   },
   {
     "date": "2025-05-01",
     "startTime": "1:00 PM",
     "endTime": "3:30 PM",
-    "available": true
+    "available": false,
+    "confirmed": false
   },
   {
     "date": "2025-05-02",
@@ -23,7 +24,8 @@
     "date": "2025-05-01",
     "startTime": "4:00 PM",
     "endTime": "6:00 PM",
-    "available": true
+    "available": false,
+    "confirmed": true
   },
   {
     "date": "2025-05-02",
@@ -31,11 +33,5 @@
     "endTime": "6:00 PM",
     "available": true,
     "confirmed": false
-  },
-  {
-    "date": "2025-04-26",
-    "startTime": "3:00 PM",
-    "endTime": "6:00 PM",
-    "available": true
   }
 ]

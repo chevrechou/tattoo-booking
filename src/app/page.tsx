@@ -66,7 +66,7 @@ export default function HomePage() {
 
   return (
     <Container mt="xl">
-      <Title align="center" mb="md">Tattoo Booking Calendar</Title>
+      <Title style={{ textAlign: 'center', marginBottom: '1rem' }} mb="md">Tattoo Booking Calendar</Title>
       <BookingCalendar onSelectDay={handleSelectDay} />
       <BookingModal
         opened={modalOpen}
